@@ -1,0 +1,15 @@
+pipeline{
+    agent any
+    stages{
+        stage('Checkout docker repo'){
+            steps{    
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Nirang1/my_k8']]) 
+            }
+        }
+        stage('Build docker image'){
+            steps{
+                sh 'docker build -t anhttpd .'
+            }
+        }
+    }
+}
