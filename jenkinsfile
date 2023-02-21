@@ -8,7 +8,18 @@ pipeline{
         }
         stage('Build docker image'){
             steps{
-                sh 'docker build -t anhttpd .'
+                script{
+                    sh 'docker build -t ecitanand/httpd:1.1 .'
+                }
+            }
+        }
+        stage('Push Image to dockerhub'){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'dockerhub_credentials', variable: 'dockerhub_credential')]) {
+                    sh 'docker login -u ecitanand -p ${dockerhub_credential}'}
+                    sh 'docker push ecitanand/httpd:1.1' 
+                }
             }
         }
     }
